@@ -1,8 +1,6 @@
 # A "KWIC" Assignment
-<div style="width:100%; display:flex; justify-content:center;">
-<span style="text-align:left; margin-left:15px; margin-right:15px; margin-bottom:10px">**Author**: Tim Roush</span>
-<span style="text-align:left; margin-left:15px; margin-right:15px; margin-bottom:10px">**Date**: May 5th, 2018</span>
-</div>
+**Author**: Tim Roush  
+**Date**: May 5th, 2018
 
 ### Assignment Description
 _For a complete description of this assignment please see the [Assignment Description](./AssignmentDescription.md) file in this repository._
