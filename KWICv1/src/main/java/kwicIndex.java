@@ -1,41 +1,108 @@
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringJoiner;
 
+/**
+ * Reads input from a local file named "input.txt" and performs a circular
+ * shift on each line.  A circular shift is the shifting of the first word
+ * to the end of the line.  Results are then sorted alphabetically and output
+ * to the console as well as a local file named "output.txt".
+ */
 public class kwicIndex {
 
+    private static ArrayList<String> lines = new ArrayList<>();
+
+    /**
+     * Primary method the handles reading of input, performing the circular
+     * shift, then sorts and outputs the results.
+     * @param args
+     */
     public static void main(String[] args) {
-        // Get input from file
-        // Perform circular shift operation on resulting input
-        // Sort those results
-        // Output results
+        readLines();
+        circularShift();
+        alphabetizeLines();
+        writeLines();
     }
 
-    private static ArrayList<String> readLines() {
-        // Open input file
-        // Read all lines of text into an ArrayList<String>
-        // Return the resulting ArrayList
-        return null;
+
+    // Read input from a file
+    private static void readLines() {
+        FileReader file;
+        BufferedReader inputStream = null;
+        String line;
+
+        try {
+            file = new FileReader("input.txt");
+            inputStream = new BufferedReader(file);
+            while ((line = inputStream.readLine()) != null) {
+                lines.add(line);
+            }
+            inputStream.close();
+            file.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("(!) There was an error reading file: input.txt");
+            System.exit(1);
+        } catch (IOException e) {
+            System.out.println("(!) There was an error reading file: input.txt");
+            System.exit(1);
+        }
     }
 
-    private static void circularShift(ArrayList<String> lines) {
-        // For every lines in supplied collection:
-        // Perform a circular shift operation
+    // Perform a circular shift on every line
+    private static void circularShift() {
+        ArrayList<String> newLines = new ArrayList<>();
+        for (String line : lines) {
+            line = circularShiftLine(line);
+            newLines.add(line);
+        }
+        lines = newLines;
     }
 
+    // Shift first word of supplied string to the end of the line
     private static String circularShiftLine(String line) {
-        // Split line into an array
-        // Store the first word
-        // Build a new string with the remaining words (all except first)
-        // Append first word to the end of new string
-        // Return string
-        return null;
+        String firstWord = "";
+        String[] words = line.split(" ");
+        StringJoiner joiner = new StringJoiner(" ");
+        if (words.length < 1) {
+            firstWord = "";
+        }
+        if (words.length > 1) {
+            firstWord = words[0];
+            for (int i = 1; i < words.length; i++) {
+                joiner.add(words[i]);
+            }
+        }
+        joiner.add(firstWord);
+        return joiner.toString();
     }
 
-    private static void alphabetize(ArrayList<String> lines) {
-        // Sort the Collection of lines
+    // Sort the collection alphabetically
+    private static void alphabetizeLines() {
+        Collections.sort(lines);
     }
 
-    private static void writeLines(ArrayList<String> lines) {
-        // Write lines as output to console
-        // Write lines as output to file
+    // Output all lines to the console and file
+    private static void writeLines() {
+        FileWriter file;
+        BufferedWriter outputStream = null;
+
+        System.out.println("Results: ");
+        System.out.println();
+
+        try {
+            file = new FileWriter("output.txt");
+            outputStream = new BufferedWriter(file);
+            for (String line : lines) {
+                outputStream.write(line);
+                outputStream.newLine();
+                System.out.println(line);
+            }
+            outputStream.close();
+            file.close();
+        } catch (IOException e ) {
+            System.out.println("(!) There was an error writing file: input.txt");
+            System.exit(1);
+        }
     }
 }
