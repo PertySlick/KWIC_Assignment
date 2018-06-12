@@ -1,5 +1,8 @@
 package view;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TextFile implements iOutput {
@@ -10,7 +13,25 @@ public class TextFile implements iOutput {
      */
     @Override
     public void writeOutput(ArrayList<String> output) {
-        // Write output to a designated file
+        FileWriter file;
+        BufferedWriter outputStream = null;
+
+        System.out.println("Results: \n");
+
+        try {
+            file = new FileWriter("output.txt");
+            outputStream = new BufferedWriter(file);
+            for (String line : output) {
+                outputStream.write(line);
+                outputStream.newLine();
+                System.out.println(line);
+            }
+            outputStream.close();
+            file.close();
+        } catch (IOException e ) {
+            System.out.println("(!) There was an error writing file: output.txt");
+            System.exit(1);
+        }
     }
 
     /**
@@ -22,6 +43,7 @@ public class TextFile implements iOutput {
      */
     @Override
     public void writeOutput(ArrayList<String> output, boolean isError) {
-        // If isError, do not create output file
+        writeOutput(output);
+        if (isError) { System.out.println("\n(!) Completed with erros..."); }
     }
 }

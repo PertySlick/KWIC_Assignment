@@ -17,8 +17,9 @@ public class Console implements iOutput {
      */
     @Override
     public void writeOutput(ArrayList<String> output) {
-        // Set output to non-error values
-        // Output result to user on the console
+        for (String line : output) {
+            System.out.println(line);
+        }
     }
 
     /**
@@ -30,7 +31,7 @@ public class Console implements iOutput {
      */
     @Override
     public void writeOutput(ArrayList<String> output, boolean isError) {
-        // Set output to error values (style, font)
-        // Output result to user on the console
+        writeOutput(output);
+        if (isError) { System.out.println("\n(!) Complete with errors..."); }
     }
 }
