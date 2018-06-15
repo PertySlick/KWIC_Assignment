@@ -1,8 +1,9 @@
+import controller.Controller;
+
 public class kwicv2 {
 
     public static void main(String[] args) {
-        // Parse command line arguments
-        // Pass valid arguments to a new Controller object
+        new Controller(args);
     }
 
     private static void parseArguments(String[] args) {

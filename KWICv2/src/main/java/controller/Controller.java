@@ -1,8 +1,10 @@
 package controller;
 
-import com.sun.org.apache.xml.internal.utils.NameSpace;
 import model.Model;
+import model.iInput.TextFile;
 import model.iInput.iInput;
+import view.Console;
+import view.TextFileOutput;
 import view.iOutput;
 
 public class Controller {
@@ -11,27 +13,44 @@ public class Controller {
     private Model model;
     private boolean debugMode = false;
 
-    public Controller(NameSpace args) {
-        // Determine input strategy from parameters
-        // Initialize the Model component with input strategy
-        // Determine and set output strategy from parameters
-        // Return an instance of a Controller object
+    public Controller(String[] args) {
+        iInput input = determineInputStrategy(args);
+        this.view = setOutputStrategy(args);
+        this.model = new Model(input);
     }
 
-    private iInput determineInputStrategy() {
-        // Parse supplied URI to determine what iInput Strategy to implement
-        // Create the model.iInput Strategy and return it
-        // Throw exception if not a valid strategy
+    private iInput determineInputStrategy(String[] args) {
+        String inputStrategy = parseArgs(args, "--input");
+        if (inputStrategy == null || inputStrategy.equals("textfile")){
+            return new TextFile("input.txt");
+        }
+        else {
+            throw new IllegalArgumentException("Invalid input argument received.");
+        }
+    }
+
+    private iOutput setOutputStrategy(String[] args) {
+        String outputStrategy = parseArgs(args, "--input");
+        if (outputStrategy == null || outputStrategy.equals("console")){
+            return new Console();
+        } else if (outputStrategy.equals("text")){
+            return new TextFileOutput();
+        } else {
+            throw new IllegalArgumentException("Invalid output argument received.");
+        }
+    }
+
+    private String parseArgs(String[] args, String flag) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals(flag)) {
+                if (i+1 <= args.length) { return args[i+1]; }
+                else { return null; }
+            }
+        }
         return null;
     }
 
-    private void setOutputStrategy() {
-        // Parse supplied parameter to determine what view.iOutput Strategy to implement
-        // Create the view.iOutput Strategy and set it to global variable
-        // Throw exception if not a valid strategy
-    }
-
     private void setDebugMode(boolean isDebug) {
-        // Set debug mode status
+        this.debugMode = isDebug;
     }
 }
